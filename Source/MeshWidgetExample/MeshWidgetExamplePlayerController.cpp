@@ -1,8 +1,8 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
-#include "MeshWidgetExample.h"
 #include "MeshWidgetExamplePlayerController.h"
-#include "AI/Navigation/NavigationSystem.h"
+#include "MeshWidgetExample.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 
 AMeshWidgetExamplePlayerController::AMeshWidgetExamplePlayerController()
 {
@@ -63,16 +63,14 @@ void AMeshWidgetExamplePlayerController::MoveToTouchLocation(const ETouchIndex::
 
 void AMeshWidgetExamplePlayerController::SetNewMoveDestination(const FVector DestLocation)
 {
-	APawn* const Pawn = GetPawn();
-	if (Pawn)
+	if (APawn* const MyPawn = GetPawn())
 	{
-		UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
-		float const Distance = FVector::Dist(DestLocation, Pawn->GetActorLocation());
+		float const Distance = FVector::Dist(DestLocation, MyPawn->GetActorLocation());
 
 		// We need to issue move command only if far enough in order for walk animation to play correctly
-		if (NavSys && (Distance > 120.0f))
+		if (Distance > 120.0f)
 		{
-			NavSys->SimpleMoveToLocation(this, DestLocation);
+			UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, DestLocation);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 #pragma once
 
 #include "Slate/SlateVectorArtData.h"
+#include "Components/Widget.h"
 
 #include "ParticleWidget.generated.h"
 

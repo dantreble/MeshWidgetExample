@@ -116,13 +116,13 @@ public:
 	{
 		const float Scale = AllottedGeometry.Scale;
 
+		int32 MeshId = This->TrailMeshId;
 		// Trail
-		if ( This->TrailMeshId != -1 )
+		if ( MeshId != -1 )
 		{
 			FVector2D TrailOriginWindowSpace = AllottedGeometry.LocalToAbsolute(AllottedGeometry.GetLocalSize() * 0.5f);
-
-			TSharedPtr<FSlateInstanceBufferUpdate> PerInstaceUpdate = BeginPerInstanceBufferUpdateConst(This->TrailMeshId);
-			PerInstaceUpdate->GetData().Empty();
+			
+			FSlateInstanceBufferData PerInstaceUpdate;
 
 			//const FVector2D TrailMeshExtentMin = This->TrailMeshAsset->GetExtentMin();
 			//const FVector2D TrailMeshExtentMax = This->TrailMeshAsset->GetExtentMax();
@@ -137,10 +137,12 @@ public:
 				ParticleData.SetPosition(Particle.Origin + Particle.Position * Scale);
 				ParticleData.SetScale(Scale);
 
-				PerInstaceUpdate->GetData().Add(ParticleData.GetData());
+				PerInstaceUpdate.Add(ParticleData.GetData());
 			}
 
-			FSlateInstanceBufferUpdate::CommitUpdate(PerInstaceUpdate);
+			const_cast<SParticleMeshWidget*>(this)->UpdatePerInstanceBuffer(MeshId, PerInstaceUpdate);
+
+			
 		}
 
 		return SMeshWidget::OnPaint(Args, AllottedGeometry, MyClippingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
