@@ -1,8 +1,11 @@
-// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "MeshWidgetExamplePlayerController.h"
-#include "MeshWidgetExample.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Runtime/Engine/Classes/Components/DecalComponent.h"
+#include "HeadMountedDisplayFunctionLibrary.h"
+#include "MeshWidgetExampleCharacter.h"
+#include "Engine/World.h"
 
 AMeshWidgetExamplePlayerController::AMeshWidgetExamplePlayerController()
 {
@@ -32,18 +35,38 @@ void AMeshWidgetExamplePlayerController::SetupInputComponent()
 	// support touch devices 
 	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AMeshWidgetExamplePlayerController::MoveToTouchLocation);
 	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AMeshWidgetExamplePlayerController::MoveToTouchLocation);
+
+	InputComponent->BindAction("ResetVR", IE_Pressed, this, &AMeshWidgetExamplePlayerController::OnResetVR);
+}
+
+void AMeshWidgetExamplePlayerController::OnResetVR()
+{
+	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
 void AMeshWidgetExamplePlayerController::MoveToMouseCursor()
 {
-	// Trace to see what is under the mouse cursor
-	FHitResult Hit;
-	GetHitResultUnderCursor(ECC_Visibility, true, Hit);
-
-	if (Hit.bBlockingHit)
+	if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
 	{
-		// We hit something, move there
-		SetNewMoveDestination(Hit.ImpactPoint);
+		if (AMeshWidgetExampleCharacter* MyPawn = Cast<AMeshWidgetExampleCharacter>(GetPawn()))
+		{
+			if (MyPawn->GetCursorToWorld())
+			{
+				UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, MyPawn->GetCursorToWorld()->GetComponentLocation());
+			}
+		}
+	}
+	else
+	{
+		// Trace to see what is under the mouse cursor
+		FHitResult Hit;
+		GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+		if (Hit.bBlockingHit)
+		{
+			// We hit something, move there
+			SetNewMoveDestination(Hit.ImpactPoint);
+		}
 	}
 }
 
@@ -63,12 +86,13 @@ void AMeshWidgetExamplePlayerController::MoveToTouchLocation(const ETouchIndex::
 
 void AMeshWidgetExamplePlayerController::SetNewMoveDestination(const FVector DestLocation)
 {
-	if (APawn* const MyPawn = GetPawn())
+	APawn* const MyPawn = GetPawn();
+	if (MyPawn)
 	{
 		float const Distance = FVector::Dist(DestLocation, MyPawn->GetActorLocation());
 
 		// We need to issue move command only if far enough in order for walk animation to play correctly
-		if (Distance > 120.0f)
+		if ((Distance > 120.0f))
 		{
 			UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, DestLocation);
 		}

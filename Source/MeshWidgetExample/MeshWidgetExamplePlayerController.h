@@ -1,5 +1,8 @@
-// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #pragma once
+
+#include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "MeshWidgetExamplePlayerController.generated.h"
 
@@ -19,6 +22,9 @@ protected:
 	virtual void PlayerTick(float DeltaTime) override;
 	virtual void SetupInputComponent() override;
 	// End PlayerController interface
+
+	/** Resets HMD orientation in VR. */
+	void OnResetVR();
 
 	/** Navigate player to the current mouse cursor location. */
 	void MoveToMouseCursor();

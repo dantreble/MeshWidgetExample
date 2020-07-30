@@ -1,10 +1,13 @@
-// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #pragma once
-#include "GameFramework/GameMode.h"
+
+#include "CoreMinimal.h"
+#include "GameFramework/GameModeBase.h"
 #include "MeshWidgetExampleGameMode.generated.h"
 
 UCLASS(minimalapi)
-class AMeshWidgetExampleGameMode : public AGameMode
+class AMeshWidgetExampleGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 

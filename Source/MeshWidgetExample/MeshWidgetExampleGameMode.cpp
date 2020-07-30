@@ -1,9 +1,9 @@
-// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "MeshWidgetExampleGameMode.h"
-#include "MeshWidgetExample.h"
 #include "MeshWidgetExamplePlayerController.h"
 #include "MeshWidgetExampleCharacter.h"
+#include "UObject/ConstructorHelpers.h"
 
 AMeshWidgetExampleGameMode::AMeshWidgetExampleGameMode()
 {
