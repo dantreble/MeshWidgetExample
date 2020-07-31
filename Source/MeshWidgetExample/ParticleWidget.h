@@ -1,10 +1,11 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "Slate/SlateVectorArtData.h"
 #include "Components/Widget.h"
 
 #include "ParticleWidget.generated.h"
+
+class USlateVectorArtData;
 
 UCLASS(minimalapi)
 class UParticleWidget : public UWidget

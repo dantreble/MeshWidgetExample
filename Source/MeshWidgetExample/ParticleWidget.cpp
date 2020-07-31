@@ -1,10 +1,11 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
+
+#include "ParticleWidget.h"
 #include "MeshWidgetExample.h"
 #include "Slate/SMeshWidget.h"
 #include "Slate/SlateVectorArtInstanceData.h"
 
-#include "ParticleWidget.h"
 
 struct FSimpleParticle
 {
