@@ -138,7 +138,7 @@ public:
 				ParticleData.SetPosition(Particle.Origin + Particle.Position * Scale);
 				ParticleData.SetScale(Scale);
 
-				PerInstaceUpdate.Add(ParticleData.GetData());
+				PerInstaceUpdate.Add(TArray<UE::Math::TVector4<float>>::ElementType(ParticleData.GetData()));
 			}
 
 			const_cast<SParticleMeshWidget*>(this)->UpdatePerInstanceBuffer(MeshId, PerInstaceUpdate);
